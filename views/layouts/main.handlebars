@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../public/assets/css/burger_style.css" type="text/css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>MVC With Burgers!</title>
+	
+	<script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+
+<body>
+	<div class="container">
+		{{{ body }}}
+	</div>
+</body>
+<script>
+	$(".change-devoured").on("click", function (event) {
+		var id = $(this).data("id");
+		var newDevoured = $(this).data("newdevoured");
+		var newDevouredState = {
+			devoured: newDevoured
+		};
+		// Send the PUT request.
+		$.ajax("/api/burgers/" + id, {
+			type: "PUT",
+			data: newDevouredState
+		}).then(
+			function () {
+			    console.log("changed devoured to", newDevoured);
+				location.reload();
+			}
+		);
+	});
+	$(".create-form").on("submit", function (event) {
+		event.preventDefault();
+
+		var newBurger = {
+			name: $("#ca").val().trim(),
+			devoured: 0
+		};
+		// Send the POST request.
+		$.ajax("/api/burgers", {
+			type: "POST",
+			data: newBurger
+		}).then(
+			function () {
+                console.log("created new burger");
+				location.reload();
+			}
+		);
+	});
+</script>
+
+</html>
